@@ -2,8 +2,10 @@
 
 namespace Models;
 
-class Category
+class Service
 {
     public int $id;
     public string $name;
+    public string $description;
+    public string $image;
 }

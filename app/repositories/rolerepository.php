@@ -6,12 +6,12 @@ use PDO;
 use PDOException;
 use Repositories\Repository;
 
-class CategoryRepository extends Repository
+class RoleRepository extends Repository
 {
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT id, name FROM category";
+            $query = "SELECT id, name FROM role";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -22,9 +22,9 @@ class CategoryRepository extends Repository
             }
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
-            $articles = $stmt->fetchAll();
-            return $articles;
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Role');
+            $roles = $stmt->fetchAll();
+            return $roles;
         } catch (PDOException $e) {
             echo $e;
         }
@@ -33,37 +33,36 @@ class CategoryRepository extends Repository
     function getOne($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT id, name FROM category WHERE id = :id");
+            $stmt = $this->connection->prepare("SELECT id, name FROM role WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
-            $product = $stmt->fetch();
-            return $product;
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Role');
+            $role = $stmt->fetch();
+            return $role;
         } catch (PDOException $e) {
             echo $e;
         }
     }
 
-    function insert($category)
+    function insert($role)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into category (name) VALUES (?)");
-            $stmt->execute([$category->name]);
-            $category->id = $this->connection->lastInsertId();
-            return $category;
+            $stmt = $this->connection->prepare("INSERT into role (name) VALUES (?)");
+            $stmt->execute([$role->name]);
+            $role->id = $this->connection->lastInsertId();
+            return $role;
         } catch (PDOException $e) {
             echo $e;
         }
     }
 
-
-    function update($category, $id)
+    function update($role, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE category SET name = ? WHERE id = ?");
-            $stmt->execute([$category->name, $id]);
-            return $category;
+            $stmt = $this->connection->prepare("UPDATE role SET name = ? WHERE id = ?");
+            $stmt->execute([$role->name, $id]);
+            return $role;
         } catch (PDOException $e) {
             echo $e;
         }
@@ -72,13 +71,12 @@ class CategoryRepository extends Repository
     function delete($id)
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM category WHERE id = :id");
+            $stmt = $this->connection->prepare("DELETE FROM role WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             return;
         } catch (PDOException $e) {
             echo $e;
         }
-        return true;
     }
 }

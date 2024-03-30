@@ -25,7 +25,7 @@ class ProductRepository extends Repository
             $stmt->execute();
 
             $products = array();
-            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {               
+            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
                 $products[] = $this->rowToProduct($row);
             }
 
@@ -53,11 +53,13 @@ class ProductRepository extends Repository
         }
     }
 
-    function rowToProduct($row) {
+    function rowToProduct($row)
+    {
         $product = new Product();
         $product->id = $row['id'];
         $product->name = $row['name'];
         $product->price = $row['price'];
+        $product->quantity_available = $row['quantity_available'];
         $product->description = $row['description'];
         $product->image = $row['image'];
         $product->category_id = $row['category_id'];
@@ -72,9 +74,9 @@ class ProductRepository extends Repository
     function insert($product)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into product (name, price, description, image, category_id) VALUES (?,?,?,?,?)");
+            $stmt = $this->connection->prepare("INSERT into product (name, price, quantity_available, description, image, category_id) VALUES (?,?,?,?,?,?)");
 
-            $stmt->execute([$product->name, $product->price, $product->description, $product->image, $product->category_id]);
+            $stmt->execute([$product->name, $product->price, $product->quantity_available, $product->description, $product->image, $product->category_id]);
 
             $product->id = $this->connection->lastInsertId();
 
@@ -88,9 +90,9 @@ class ProductRepository extends Repository
     function update($product, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE product SET name = ?, price = ?, description = ?, image = ?, category_id = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE product SET name = ?, price = ?, quantity_available = ?, description = ?, image = ?, category_id = ? WHERE id = ?");
 
-            $stmt->execute([$product->name, $product->price, $product->description, $product->image, $product->category_id, $id]);
+            $stmt->execute([$product->name, $product->price, $product->quantity_available, $product->description, $product->image, $product->category_id, $id]);
 
             return $this->getOne($product->id);
         } catch (PDOException $e) {

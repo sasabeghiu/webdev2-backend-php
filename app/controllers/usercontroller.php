@@ -1,6 +1,8 @@
 <?php
 
 namespace Controllers;
+
+use Exception;
 use Firebase\JWT\JWT;
 use Services\UserService;
 
@@ -67,5 +69,78 @@ class UserController extends Controller
                 "passwprd" => $user->password,
                 "expireAt" => $expirationTime
             );
+    }
+
+    public function getAll()
+    {
+        $offset = NULL;
+        $limit = NULL;
+
+        if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
+            $offset = $_GET["offset"];
+        }
+        if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
+            $limit = $_GET["limit"];
+        }
+
+        $users = $this->service->getAll($offset, $limit);
+
+        $this->respond($users);
+    }
+
+    public function getOne($id)
+    {
+        $user = $this->service->getOne($id);
+
+        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
+        if (!$user) {
+            $this->respondWithError(404, "User not found");
+            return;
+        }
+
+        $this->respond($user);
+    }
+
+    public function register()
+    {
+        try {
+            $user = $this->createObjectFromPostedJson("Models\\User");
+            $user = $this->service->insert($user);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($user);
+    }
+
+    public function update($id)
+    {
+        try {
+            $user = $this->createObjectFromPostedJson("Models\\User");
+            $user = $this->service->update($user, $id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($user);
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->service->delete($id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond(true);
+    }
+
+    public function logout()
+    {
+        $this->respond([
+            "message" => "Successfully logged out",
+            "action" => "clearToken"
+        ]);
     }
 }

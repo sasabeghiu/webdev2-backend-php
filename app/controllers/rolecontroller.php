@@ -3,16 +3,15 @@
 namespace Controllers;
 
 use Exception;
-use Services\CategoryService;
+use Services\RoleService;
 
-class CategoryController extends Controller
+class RoleController extends Controller
 {
     private $service;
 
-    // initialize services
     function __construct()
     {
-        $this->service = new CategoryService();
+        $this->service = new RoleService();
     }
 
     public function getAll()
@@ -27,50 +26,44 @@ class CategoryController extends Controller
             $limit = $_GET["limit"];
         }
 
-        // check tocken
-        // if (!$this->checkforJwt()) {
-        //     return;
-        // } else {
-            $categories = $this->service->getAll($offset, $limit);
-            $this->respond($categories);
-        // }
+        $roles = $this->service->getAll($offset, $limit);
+        $this->respond($roles);
     }
 
     public function getOne($id)
     {
-        $category = $this->service->getOne($id);
+        $role = $this->service->getOne($id);
 
-        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
-        if (!$category) {
-            $this->respondWithError(404, "Category not found");
+        if (!$role) {
+            $this->respondWithError(404, "Role not found");
             return;
         }
 
-        $this->respond($category);
+        $this->respond($role);
     }
 
     public function create()
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->insert($category);
+            $role = $this->createObjectFromPostedJson("Models\\Role");
+            $role = $this->service->insert($role);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($role);
     }
 
     public function update($id)
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->update($category, $id);
+            $role = $this->createObjectFromPostedJson("Models\\Role");
+            $role = $this->service->update($role, $id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($role);
     }
 
     public function delete($id)

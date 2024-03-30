@@ -3,16 +3,15 @@
 namespace Controllers;
 
 use Exception;
-use Services\CategoryService;
+use Services\ShoppingCartService;
 
-class CategoryController extends Controller
+class ShoppingCartController extends Controller
 {
     private $service;
 
-    // initialize services
     function __construct()
     {
-        $this->service = new CategoryService();
+        $this->service = new ShoppingCartService();
     }
 
     public function getAll()
@@ -27,50 +26,46 @@ class CategoryController extends Controller
             $limit = $_GET["limit"];
         }
 
-        // check tocken
-        // if (!$this->checkforJwt()) {
-        //     return;
-        // } else {
-            $categories = $this->service->getAll($offset, $limit);
-            $this->respond($categories);
-        // }
+        $carts = $this->service->getAll($offset, $limit);
+
+        $this->respond($carts);
     }
 
     public function getOne($id)
     {
-        $category = $this->service->getOne($id);
+        $cart = $this->service->getOne($id);
 
         // we might need some kind of error checking that returns a 404 if the product is not found in the DB
-        if (!$category) {
-            $this->respondWithError(404, "Category not found");
+        if (!$cart) {
+            $this->respondWithError(404, "Shopping Cart not found");
             return;
         }
 
-        $this->respond($category);
+        $this->respond($cart);
     }
 
     public function create()
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->insert($category);
+            $cart = $this->createObjectFromPostedJson("Models\\ShoppingCart");
+            $cart = $this->service->insert($cart);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($cart);
     }
 
     public function update($id)
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->update($category, $id);
+            $cart = $this->createObjectFromPostedJson("Models\\ShoppingCart");
+            $cart = $this->service->update($cart, $id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($cart);
     }
 
     public function delete($id)

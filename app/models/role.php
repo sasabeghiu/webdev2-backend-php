@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Category
+class Role
 {
     public int $id;
     public string $name;

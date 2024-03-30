@@ -2,15 +2,15 @@
 
 namespace Services;
 
-use Repositories\ProductRepository;
+use Repositories\ShoppingCartRepository;
 
-class ProductService
+class ShoppingCartService
 {
     private $repository;
 
     function __construct()
     {
-        $this->repository = new ProductRepository();
+        $this->repository = new ShoppingCartRepository();
     }
 
     public function getAll($offset = NULL, $limit = NULL)

@@ -27,8 +27,42 @@ $router->post('/categories', 'CategoryController@create');
 $router->put('/categories/(\d+)', 'CategoryController@update');
 $router->delete('/categories/(\d+)', 'CategoryController@delete');
 
+// routes for the user roles endpoint
+$router->get('/roles', 'RoleController@getAll');
+$router->get('/roles/(\d+)', 'RoleController@getOne');
+$router->post('/roles', 'RoleController@create');
+$router->put('/roles/(\d+)', 'RoleController@update');
+$router->delete('/roles/(\d+)', 'RoleController@delete');
+
+// routes for the services endpoint
+$router->get('/services', 'ServiceController@getAll');
+$router->get('/services/(\d+)', 'ServiceController@getOne');
+$router->post('/services', 'ServiceController@create');
+$router->put('/services/(\d+)', 'ServiceController@update');
+$router->delete('/services/(\d+)', 'ServiceController@delete');
+
+// routes for the shopping carts endpoint
+$router->get('/shoppingcarts', 'ShoppingCartController@getAll');
+$router->get('/shoppingcarts/(\d+)', 'ShoppingCartController@getOne');
+$router->post('/shoppingcarts', 'ShoppingCartController@create');
+$router->put('/shoppingcarts/(\d+)', 'ShoppingCartController@update');
+$router->delete('/shoppingcarts/(\d+)', 'ShoppingCartController@delete');
+
+// routes for the shopping cart items endpoint
+$router->get('/cartitems', 'CartItemController@getAll');
+$router->get('/cartitems/(\d+)', 'CartItemController@getOne');
+$router->post('/cartitems', 'CartItemController@create');
+$router->put('/cartitems/(\d+)', 'CartItemController@update');
+$router->delete('/cartitems/(\d+)', 'CartItemController@delete');
+
 // routes for the users endpoint
-$router->post('/users/login', 'UserController@login');
+$router->get('/users', 'UserController@getAll');
+$router->get('/users/(\d+)', 'UserController@getOne');
+$router->post('/users/register', 'UserController@register'); //
+$router->post('/users/login', 'UserController@login'); //
+$router->post('/users/logout', 'UserController@logout'); //
+$router->put('/users/(\d+)', 'UserController@update'); //
+$router->delete('/users/(\d+)', 'UserController@delete'); //
 
 // Run it!
 $router->run();
