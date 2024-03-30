@@ -45,11 +45,17 @@ class ShoppingCartRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $row = $stmt->fetch();
+
+            if (!$row) {
+                return null;
+            }
+
             $cart = $this->rowToProduct($row);
 
             return $cart;
         } catch (PDOException $e) {
             echo $e;
+            return null;
         }
     }
 

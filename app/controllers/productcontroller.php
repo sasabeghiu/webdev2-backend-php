@@ -47,6 +47,10 @@ class ProductController extends Controller
 
     public function create()
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $product = $this->createObjectFromPostedJson("Models\\Product");
             $product = $this->service->insert($product);
@@ -54,11 +58,15 @@ class ProductController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($product);
+        $this->respondWithCode(201, $product);
     }
 
     public function update($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $product = $this->createObjectFromPostedJson("Models\\Product");
             $product = $this->service->update($product, $id);
@@ -71,12 +79,16 @@ class ProductController extends Controller
 
     public function delete($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond(true);
+        $this->respondWithCode(204, null);
     }
 }

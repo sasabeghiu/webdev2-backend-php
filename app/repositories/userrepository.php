@@ -13,7 +13,7 @@ class UserRepository extends Repository
     function checkUsernamePassword($username, $password)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT id, username, password, email FROM user WHERE username = :username");
+            $stmt = $this->connection->prepare("SELECT id, username, password, email, role_id FROM user WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -46,7 +46,7 @@ class UserRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT user.id, username, password, email, role.id as role_id, role.name as role_name FROM user INNER JOIN role ON user.role_id = role.id";
+            $query = "SELECT user.id, username, email, role.id as role_id, role.name as role_name FROM user INNER JOIN role ON user.role_id = role.id";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -78,11 +78,17 @@ class UserRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $row = $stmt->fetch();
+
+            if (!$row) {
+                return null;
+            }
+
             $user = $this->rowToProduct($row);
 
             return $user;
         } catch (PDOException $e) {
             echo $e;
+            return null;
         }
     }
 
@@ -91,7 +97,9 @@ class UserRepository extends Repository
         $user = new User();
         $user->id = $row['id'];
         $user->username = $row['username'];
-        $user->password = $row['password'];
+        if (isset($row['password'])) {
+            $user->password = $row['password'];
+        }
         $user->email = $row['email'];
         $user->role_id = $row['role_id'];
         $role = new Role();
@@ -107,7 +115,8 @@ class UserRepository extends Repository
         try {
             $stmt = $this->connection->prepare("INSERT into user (username, password, email, role_id) VALUES (?,?,?,?)");
 
-            $stmt->execute([$user->username, $user->password, $user->email, $user->role_id]);
+            $password_hash = $this->hashPassword($user->password);
+            $stmt->execute([$user->username, $password_hash, $user->email, $user->role_id]);
 
             $user->id = $this->connection->lastInsertId();
 
@@ -122,7 +131,8 @@ class UserRepository extends Repository
         try {
             $stmt = $this->connection->prepare("UPDATE user SET username = ?, password = ?, email = ?, role_id = ? WHERE id = ?");
 
-            $stmt->execute([$user->username, $user->password, $user->email, $user->role_id, $id]);
+            $password_hash = $this->hashPassword($user->password);
+            $stmt->execute([$user->username, $password_hash, $user->email, $user->role_id, $id]);
 
             return $this->getOne($id);
         } catch (PDOException $e) {

@@ -44,6 +44,10 @@ class ServiceController extends Controller
 
     public function create()
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $service = $this->createObjectFromPostedJson("Models\\Service");
             $service = $this->service->insert($service);
@@ -51,11 +55,15 @@ class ServiceController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($service);
+        $this->respondWithCode(201, $service);
     }
 
     public function update($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $service = $this->createObjectFromPostedJson("Models\\Service");
             $service = $this->service->update($service, $id);
@@ -68,12 +76,16 @@ class ServiceController extends Controller
 
     public function delete($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond(true);
+        $this->respondWithCode(204, null);
     }
 }

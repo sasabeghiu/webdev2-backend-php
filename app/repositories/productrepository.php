@@ -45,11 +45,17 @@ class ProductRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $row = $stmt->fetch();
+
+            if (!$row) {
+                return null;
+            }
+
             $product = $this->rowToProduct($row);
 
             return $product;
         } catch (PDOException $e) {
             echo $e;
+            return null;
         }
     }
 

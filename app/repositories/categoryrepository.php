@@ -39,9 +39,15 @@ class CategoryRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
             $product = $stmt->fetch();
+
+            if (!$product) {
+                return null;
+            }
+
             return $product;
         } catch (PDOException $e) {
             echo $e;
+            return null;
         }
     }
 

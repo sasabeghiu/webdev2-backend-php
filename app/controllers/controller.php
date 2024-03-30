@@ -8,7 +8,7 @@ use \Firebase\JWT\Key;
 
 class Controller
 {
-    function checkForJwt()
+    function checkForJwt($requiredRoles = [])
     {
         // Check for token header
         if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -30,12 +30,26 @@ class Controller
                 $decoded = JWT::decode($jwt, new Key($secret_key, 'HS256'));
                 // username is now found in
                 // echo $decoded->data->username;
-                return $decoded;
+
+                if (empty($decoded->data->role_id)) {
+                    $this->respondWithError(403, "Token does not contain role information");
+                    return false;
+                }
+
+                $userRole = $decoded->data->role_id;
+                if (!empty($requiredRoles) && !in_array((string)$userRole, $requiredRoles)) {
+                    $this->respondWithError(401, "Access denied for your role");
+                    return false;
+                }
+
+                return true;
             } catch (Exception $e) {
                 $this->respondWithError(401, $e->getMessage());
                 return;
             }
         }
+
+        return true;
     }
 
     function respond($data)
@@ -49,7 +63,7 @@ class Controller
         $this->respondWithCode($httpcode, $data);
     }
 
-    private function respondWithCode($httpcode, $data)
+    function respondWithCode($httpcode, $data)
     {
         header('Content-Type: application/json; charset=utf-8');
         http_response_code($httpcode);

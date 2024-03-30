@@ -27,13 +27,8 @@ class CategoryController extends Controller
             $limit = $_GET["limit"];
         }
 
-        // check tocken
-        // if (!$this->checkforJwt()) {
-        //     return;
-        // } else {
-            $categories = $this->service->getAll($offset, $limit);
-            $this->respond($categories);
-        // }
+        $categories = $this->service->getAll($offset, $limit);
+        $this->respond($categories);
     }
 
     public function getOne($id)
@@ -51,6 +46,10 @@ class CategoryController extends Controller
 
     public function create()
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $category = $this->createObjectFromPostedJson("Models\\Category");
             $this->service->insert($category);
@@ -58,11 +57,15 @@ class CategoryController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respondWithCode(201, $category);
     }
 
     public function update($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $category = $this->createObjectFromPostedJson("Models\\Category");
             $this->service->update($category, $id);
@@ -75,12 +78,16 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond(true);
+        $this->respondWithCode(204, null);
     }
 }

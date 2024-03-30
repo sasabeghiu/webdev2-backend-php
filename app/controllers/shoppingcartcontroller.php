@@ -16,6 +16,10 @@ class ShoppingCartController extends Controller
 
     public function getAll()
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         $offset = NULL;
         $limit = NULL;
 
@@ -33,6 +37,10 @@ class ShoppingCartController extends Controller
 
     public function getOne($id)
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         $cart = $this->service->getOne($id);
 
         // we might need some kind of error checking that returns a 404 if the product is not found in the DB
@@ -46,6 +54,10 @@ class ShoppingCartController extends Controller
 
     public function create()
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         try {
             $cart = $this->createObjectFromPostedJson("Models\\ShoppingCart");
             $cart = $this->service->insert($cart);
@@ -53,11 +65,15 @@ class ShoppingCartController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($cart);
+        $this->respondWithCode(201, $cart);
     }
 
     public function update($id)
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         try {
             $cart = $this->createObjectFromPostedJson("Models\\ShoppingCart");
             $cart = $this->service->update($cart, $id);
@@ -70,12 +86,16 @@ class ShoppingCartController extends Controller
 
     public function delete($id)
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         try {
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond(true);
+        $this->respondWithCode(204, null);
     }
 }

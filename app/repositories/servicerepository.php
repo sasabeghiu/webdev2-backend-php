@@ -39,9 +39,15 @@ class ServiceRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Service');
             $service = $stmt->fetch();
+
+            if (!$service) {
+                return null;
+            }
+
             return $service;
         } catch (PDOException $e) {
             echo $e;
+            return null;
         }
     }
 

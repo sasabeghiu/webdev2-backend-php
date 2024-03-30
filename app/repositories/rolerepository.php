@@ -39,9 +39,15 @@ class RoleRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Role');
             $role = $stmt->fetch();
+
+            if (!$role) {
+                return null;
+            }
+
             return $role;
         } catch (PDOException $e) {
             echo $e;
+            return null;
         }
     }
 

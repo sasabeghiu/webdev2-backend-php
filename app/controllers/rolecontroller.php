@@ -44,6 +44,10 @@ class RoleController extends Controller
 
     public function create()
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $role = $this->createObjectFromPostedJson("Models\\Role");
             $role = $this->service->insert($role);
@@ -51,11 +55,15 @@ class RoleController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($role);
+        $this->respondWithCode(201, $role);
     }
 
     public function update($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $role = $this->createObjectFromPostedJson("Models\\Role");
             $role = $this->service->update($role, $id);
@@ -68,12 +76,16 @@ class RoleController extends Controller
 
     public function delete($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond(true);
+        $this->respondWithCode(204, null);
     }
 }

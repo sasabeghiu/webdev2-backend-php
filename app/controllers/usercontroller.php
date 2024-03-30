@@ -55,7 +55,8 @@ class UserController extends Controller
             "data" => array(
                 "id" => $user->id,
                 "username" => $user->username,
-                "email" => $user->email
+                "email" => $user->email,
+                "role_id" => $user->role_id
             )
         );
 
@@ -66,13 +67,18 @@ class UserController extends Controller
                 "message" => "Successful login.",
                 "jwt" => $jwt,
                 "username" => $user->username,
-                "passwprd" => $user->password,
+                "password" => $user->password,
+                "role_id" => $user->role_id,
                 "expireAt" => $expirationTime
             );
     }
 
     public function getAll()
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         $offset = NULL;
         $limit = NULL;
 
@@ -90,6 +96,10 @@ class UserController extends Controller
 
     public function getOne($id)
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         $user = $this->service->getOne($id);
 
         // we might need some kind of error checking that returns a 404 if the product is not found in the DB
@@ -110,11 +120,15 @@ class UserController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($user);
+        $this->respondWithCode(201, $user);
     }
 
     public function update($id)
     {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
         try {
             $user = $this->createObjectFromPostedJson("Models\\User");
             $user = $this->service->update($user, $id);
@@ -127,17 +141,25 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         try {
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond(true);
+        $this->respondWithCode(204, null);
     }
 
     public function logout()
     {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
         $this->respond([
             "message" => "Successfully logged out",
             "action" => "clearToken"
