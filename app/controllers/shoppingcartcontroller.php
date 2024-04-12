@@ -52,6 +52,23 @@ class ShoppingCartController extends Controller
         $this->respond($cart);
     }
 
+    public function getCartByUserId($id)
+    {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
+        $cart = $this->service->getCartByUserId($id);
+
+        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
+        if (!$cart) {
+            $this->respondWithError(404, "Shopping Cart not found");
+            return;
+        }
+
+        $this->respond($cart);
+    }
+
     public function create()
     {
         if (!$this->checkforJwt([1, 2])) {

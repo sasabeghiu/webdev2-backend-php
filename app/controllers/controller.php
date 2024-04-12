@@ -42,7 +42,7 @@ class Controller
                     return false;
                 }
 
-                return true;
+                return $decoded->data->id;
             } catch (Exception $e) {
                 $this->respondWithError(401, $e->getMessage());
                 return;

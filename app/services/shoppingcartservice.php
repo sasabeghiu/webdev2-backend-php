@@ -23,6 +23,11 @@ class ShoppingCartService
         return $this->repository->getOne($id);
     }
 
+    public function getCartByUserId($id)
+    {
+        return $this->repository->getCartByUserId($id);
+    }
+
     public function insert($item)
     {
         return $this->repository->insert($item);

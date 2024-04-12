@@ -98,4 +98,40 @@ class CartItemController extends Controller
 
         $this->respondWithCode(204, null);
     }
+    /**
+     * Adds a product to the shopping cart.
+     */
+    public function addToCart()
+    {
+        $user_id = $this->checkForJwt([1, 2]);  // Assume 1, 2 are valid roles
+        if (!$user_id) {
+            return;  // Proper response already handled in verifyJwtAndGetUserId
+        }
+
+        // Get JSON data from the request body
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data) {
+            $this->respondWithError(400, 'Bad Request: Invalid JSON data');
+            return;
+        }
+
+        $cart_id = $data['cart_id'] ?? null;
+        $product_id = $data['product_id'] ?? null;
+        $quantity = $data['quantity'] ?? null;
+
+        // Validate required parameters
+        if (is_null($cart_id) || is_null($product_id) || is_null($quantity)) {
+            $this->respondWithError(400, 'Bad Request: Missing required parameters');
+            return;
+        }
+
+        try {
+            // Attempt to add item to cart
+            $this->service->addToCart($user_id, $product_id, $quantity);
+            $this->respondWithCode(204, null); // No Content response
+        } catch (\Exception $e) {
+            // Internal Server Error
+            $this->respondWithError(500, 'Internal Server Error: ' . $e->getMessage());
+        }
+    }
 }

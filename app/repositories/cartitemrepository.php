@@ -121,4 +121,41 @@ class CartItemRepository extends Repository
         }
         return true;
     }
+
+    function addItemToCart($cartId, $productId, $quantity)
+    {
+        try {
+            // Ensure the cart exists
+            $stmt = $this->connection->prepare("SELECT id FROM shopping_cart WHERE id = ?");
+            $stmt->execute([$cartId]);
+            if ($stmt->fetch() === false) {
+                echo "Shopping cart does not exist.";
+                return null;
+            }
+
+            // Check if the product already exists in the cart
+            $stmt = $this->connection->prepare("SELECT * FROM cart_item WHERE cart_id = ? AND product_id = ?");
+            $stmt->execute([$cartId, $productId]);
+            $existingItem = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existingItem) {
+                // Update existing cart item
+                $newQuantity = $existingItem['quantity'] + $quantity;
+                $stmt = $this->connection->prepare("UPDATE cart_item SET quantity = ? WHERE id = ?");
+                $stmt->execute([$newQuantity, $existingItem['id']]);
+            } else {
+                // Insert new cart item
+                $stmt = $this->connection->prepare("INSERT INTO cart_item (cart_id, product_id, quantity) VALUES (?, ?, ?)");
+                $stmt->execute([$cartId, $productId, $quantity]);
+            }
+
+            // Optionally, update the cart's total price in ShoppingCartRepository
+            // This logic might be moved or called here to reflect changes.
+
+            return "Item added or updated successfully.";
+        } catch (PDOException $e) {
+            echo $e;
+            return null;
+        }
+    }
 }

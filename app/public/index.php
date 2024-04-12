@@ -44,6 +44,7 @@ $router->delete('/services/(\d+)', 'ServiceController@delete');
 // routes for the shopping carts endpoint
 $router->get('/shoppingcarts', 'ShoppingCartController@getAll');
 $router->get('/shoppingcarts/(\d+)', 'ShoppingCartController@getOne');
+$router->get('/shoppingcarts/user_(\d+)', 'ShoppingCartController@getCartByUserId');
 $router->post('/shoppingcarts', 'ShoppingCartController@create');
 $router->put('/shoppingcarts/(\d+)', 'ShoppingCartController@update');
 $router->delete('/shoppingcarts/(\d+)', 'ShoppingCartController@delete');
@@ -54,6 +55,7 @@ $router->get('/cartitems/(\d+)', 'CartItemController@getOne');
 $router->post('/cartitems', 'CartItemController@create');
 $router->put('/cartitems/(\d+)', 'CartItemController@update');
 $router->delete('/cartitems/(\d+)', 'CartItemController@delete');
+$router->post('/cartitems/addToCart', 'CartItemController@addToCart');
 
 // routes for the users endpoint
 $router->get('/users', 'UserController@getAll');

@@ -38,7 +38,7 @@ class ShoppingCartRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, user.username as user_username FROM shopping_cart INNER JOIN user ON shopping_cart.user_id = user.id WHERE user.id = :id";
+            $query = "SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, user.username as user_username FROM shopping_cart INNER JOIN user ON shopping_cart.user_id = user.id WHERE shopping_cart.id = :id";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -51,6 +51,32 @@ class ShoppingCartRepository extends Repository
             }
 
             $cart = $this->rowToProduct($row);
+
+            return $cart;
+        } catch (PDOException $e) {
+            echo $e;
+            return null;
+        }
+    }
+
+    function getCartByUserId($id)
+    {
+        try {
+            $query = "SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, user.username as user_username FROM shopping_cart INNER JOIN user ON shopping_cart.user_id = user.id WHERE user.id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch();
+
+            if (!$row) {
+                $stmt = $this->connection->prepare("INSERT INTO shopping_cart (user_id, created_at, updated_at, total_price) VALUES (?, NOW(), NOW(), 0)");
+                $stmt->execute([$id]);
+                return $this->connection->lastInsertId();
+            }
+
+            $cart = $row['id'];
 
             return $cart;
         } catch (PDOException $e) {
@@ -78,9 +104,9 @@ class ShoppingCartRepository extends Repository
     function insert($shopping_cart)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into shopping_cart(user_id, created_at, updated_at, total_price) VALUES (?,?,?,?)");
+            $stmt = $this->connection->prepare("INSERT into shopping_cart(user_id, created_at, updated_at, total_price) VALUES (?, NOW(), NOW(),?)");
 
-            $stmt->execute([$shopping_cart->user_id, $shopping_cart->created_at, $shopping_cart->updated_at, $shopping_cart->total_price]);
+            $stmt->execute([$shopping_cart->user_id, $shopping_cart->total_price]);
 
             $shopping_cart->id = $this->connection->lastInsertId();
 
@@ -94,9 +120,9 @@ class ShoppingCartRepository extends Repository
     function update($shopping_cart, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE shopping_cart SET user_id = ?, created_at = ?, updated_at = ?, total_price = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE shopping_cart SET user_id = ?, created_at = ?, updated_at = NOW(), total_price = ? WHERE id = ?");
 
-            $stmt->execute([$shopping_cart->user_id, $shopping_cart->created_at, $shopping_cart->updated_at, $shopping_cart->total_price, $id]);
+            $stmt->execute([$shopping_cart->user_id, $shopping_cart->created_at, $shopping_cart->total_price, $id]);
 
             return $this->getOne($id);
         } catch (PDOException $e) {
