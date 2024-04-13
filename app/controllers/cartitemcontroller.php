@@ -134,4 +134,21 @@ class CartItemController extends Controller
             $this->respondWithError(500, 'Internal Server Error: ' . $e->getMessage());
         }
     }
+
+    public function getCartItemsCount($id)
+    {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
+        $item = $this->service->getCartItemsCount($id);
+
+        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
+        if (!$item) {
+            $this->respondWithError(404, "Shopping Cart Item not found");
+            return;
+        }
+
+        $this->respond($item);
+    }
 }

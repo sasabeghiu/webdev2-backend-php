@@ -56,6 +56,7 @@ $router->post('/cartitems', 'CartItemController@create');
 $router->put('/cartitems/(\d+)', 'CartItemController@update');
 $router->delete('/cartitems/(\d+)', 'CartItemController@delete');
 $router->post('/cartitems/addToCart', 'CartItemController@addToCart');
+$router->get('/cartitems/user/(\d+)/count', 'CartItemController@getCartItemsCount');
 
 // routes for the users endpoint
 $router->get('/users', 'UserController@getAll');

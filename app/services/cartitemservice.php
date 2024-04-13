@@ -50,4 +50,9 @@ class CartItemService
 
         return $this->cartItemRepository->addItemToCart($cart_id, $product_id, $quantity);
     }
+
+    public function getCartItemsCount($id)
+    {
+        return $this->cartItemRepository->getCartItemsCount($id);
+    }
 }
