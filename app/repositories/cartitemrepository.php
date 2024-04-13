@@ -99,9 +99,18 @@ class CartItemRepository extends Repository
     function update($cart_item, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE cart_item SET cart_id = ?, product_id = ?, quantity = ? WHERE id = ?");
+            $cartIdStmt = $this->connection->prepare("SELECT cart_id FROM cart_item WHERE id = :id");
+            $cartIdStmt->bindParam(':id', $id);
+            $cartIdStmt->execute();
+            $cartIdResult = $cartIdStmt->fetch(PDO::FETCH_ASSOC);
+            $cart_id = $cartIdResult['cart_id'] ?? null;
 
-            $stmt->execute([$cart_item->cart_id, $cart_item->product_id, $cart_item->quantity, $id]);
+            $stmt = $this->connection->prepare("UPDATE cart_item SET quantity = ? WHERE id = ?");
+            $stmt->execute([$cart_item->quantity, $id]);
+
+            if ($cart_id) {
+                $this->recalculateAndUpdateTotalPrice($cart_id);
+            }
 
             return $this->getOne($id);
         } catch (PDOException $e) {
@@ -112,14 +121,41 @@ class CartItemRepository extends Repository
     function delete($id)
     {
         try {
+            $cartIdStmt = $this->connection->prepare("SELECT cart_id FROM cart_item WHERE id = :id");
+            $cartIdStmt->bindParam(':id', $id);
+            $cartIdStmt->execute();
+            $cartIdResult = $cartIdStmt->fetch(PDO::FETCH_ASSOC);
+            $cart_id = $cartIdResult['cart_id'] ?? null;
+
             $stmt = $this->connection->prepare("DELETE FROM cart_item WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            return;
+
+            if ($cart_id) {
+                $this->recalculateAndUpdateTotalPrice($cart_id);
+            }
+
+            return true;
         } catch (PDOException $e) {
             echo $e;
         }
         return true;
+    }
+
+    function recalculateAndUpdateTotalPrice($cart_id)
+    {
+        // Recalculate the total price
+        $totalStmt = $this->connection->prepare("SELECT SUM(p.price * ci.quantity) AS new_total FROM cart_item ci JOIN product p ON ci.product_id = p.id WHERE ci.cart_id = :cart_id");
+        $totalStmt->bindParam(':cart_id', $cart_id);
+        $totalStmt->execute();
+        $newTotalResult = $totalStmt->fetch(PDO::FETCH_ASSOC);
+        $newTotal = $newTotalResult['new_total'] ?? 0;
+
+        // Update the total price in the shopping_cart table
+        $updateTotalStmt = $this->connection->prepare("UPDATE shopping_cart SET total_price = :new_total WHERE id = :cart_id");
+        $updateTotalStmt->bindParam(':new_total', $newTotal);
+        $updateTotalStmt->bindParam(':cart_id', $cart_id);
+        $updateTotalStmt->execute();
     }
 
     function addItemToCart($cartId, $productId, $quantity)
@@ -149,8 +185,14 @@ class CartItemRepository extends Repository
                 $stmt->execute([$cartId, $productId, $quantity]);
             }
 
-            // Optionally, update the cart's total price in ShoppingCartRepository
-            // This logic might be moved or called here to reflect changes.
+            // Calculate the new total price for the cart
+            $stmt = $this->connection->prepare("SELECT SUM(p.price * ci.quantity) AS total FROM cart_item ci JOIN product p ON ci.product_id = p.id WHERE ci.cart_id = ?");
+            $stmt->execute([$cartId]);
+            $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+            // Update the total price in the shopping_cart table
+            $stmt = $this->connection->prepare("UPDATE shopping_cart SET total_price = ? WHERE id = ?");
+            $stmt->execute([$total, $cartId]);
 
             return "Item added or updated successfully.";
         } catch (PDOException $e) {

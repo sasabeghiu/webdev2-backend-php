@@ -85,6 +85,31 @@ class ShoppingCartRepository extends Repository
         }
     }
 
+    function getCartItemsByUserId($id)
+    {
+        try {
+            $query = "SELECT ci.*, p.name as product_name, p.price as product_price, p.image as product_image
+            FROM cart_item ci
+            JOIN shopping_cart sc ON ci.cart_id = sc.id
+            JOIN product p ON ci.product_id = p.id
+            WHERE sc.user_id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $row = $stmt->fetchAll();
+
+            if (!$row) {
+                return null;
+            }
+
+            return $row;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
     function rowToProduct($row)
     {
         $shopping_cart = new ShoppingCart();
