@@ -1,3 +1,19 @@
+# Web Development 2 Assignment
+This repository serves as a backend REST API in php for the web development 2 assignment.
+The project is not yet fully completed.
+
+## Existing users
+```bash
+Admin:
+username: username
+password: password
+
+Customer:
+username: rester
+password: rester
+```
+
+
 # Docker setup that runs a REST api
 This repository provides a helper project for a Vue frontend assignment.
 
@@ -17,16 +33,3 @@ Or run:
 docker-compose down
 ```
 
-# Web Development 2 Assignment
-This repository serves as a backend REST API in php for the web development 2 assignment.
-
-## Existing users
-```bash
-Admin:
-username: username
-password: password
-
-Customer:
-username: rester
-password: rester
-```
