@@ -67,5 +67,10 @@ $router->post('/users/logout', 'UserController@logout'); //
 $router->put('/users/(\d+)', 'UserController@update'); //
 $router->delete('/users/(\d+)', 'UserController@delete'); //
 
+// routes for the orders endpoint
+$router->get('/orders/(\d+)', 'OrderController@getOne');
+$router->post('/orders', 'OrderController@create');
+$router->post('/orders/items', 'OrderController@addOrderItem');
+
 // Run it!
 $router->run();

@@ -158,6 +158,10 @@ class ShoppingCartRepository extends Repository
     function delete($id)
     {
         try {
+            $item_stmt = $this->connection->prepare("DELETE FROM cart_item WHERE cart_id = :id");
+            $item_stmt->bindParam(':id', $id);
+            $item_stmt->execute();
+
             $stmt = $this->connection->prepare("DELETE FROM shopping_cart WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
