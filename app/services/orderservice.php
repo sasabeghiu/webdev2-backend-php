@@ -38,4 +38,14 @@ class OrderService
     {
         return $this->orderrepository->addOrderItem($item);
     }
+
+    public function update($order, $id)
+    {
+        return $this->orderrepository->update($order, $id);
+    }
+
+    public function delete($id)
+    {
+        return $this->orderrepository->delete($id);
+    }
 }

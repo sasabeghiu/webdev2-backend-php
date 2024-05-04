@@ -94,4 +94,35 @@ class OrderController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
     }
+
+    public function update($id)
+    {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
+        try {
+            $order = $this->createObjectFromPostedJson("Models\\Order");
+            $order = $this->service->update($order, $id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($order);
+    }
+
+    public function delete($id)
+    {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
+        try {
+            $this->service->delete($id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respondWithCode(204, null);
+    }
 }

@@ -73,6 +73,8 @@ $router->get('/orders', 'OrderController@getAll');
 $router->get('/orders/user/(\d+)', 'OrderController@getAllByUserId');
 $router->post('/orders', 'OrderController@create');
 $router->post('/orders/items', 'OrderController@addOrderItem');
+$router->put('/orders/(\d+)', 'OrderController@update');
+$router->delete('/orders/(\d+)', 'OrderController@delete');
 
 // Run it!
 $router->run();

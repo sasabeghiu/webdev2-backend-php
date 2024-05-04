@@ -21,17 +21,26 @@ class OrderRepository extends Repository
             $stmt = $this->connection->prepare($query);
             $stmt->execute([$id]);
 
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $row = $stmt->fetch();
+            $lastOrderId = null;
+            $order = null;
 
-            if (!$row) {
-                return null;
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if ($lastOrderId != $row['id']) {
+                    if ($order) {
+                        $order = $order;
+                    }
+
+                    $order = $this->rowToOrder($row);
+                    $lastOrderId = $row['id'];
+                }
+
+                if ($row['item_id']) {
+                    $order->items[] = $this->rowToOrderItem($row);
+                }
             }
 
-            $order = $this->rowToOrder($row);
-
-            if ($row['item_id']) {
-                $order->items[] = $this->rowToOrderItem($row);
+            if ($order) {
+                $order = $order;
             }
 
             return $order;
@@ -176,5 +185,35 @@ class OrderRepository extends Repository
             echo $e;
             return null;
         }
+    }
+
+    function update($order, $id)
+    {
+        try {
+            $stmt = $this->connection->prepare("UPDATE `order` SET status = ?, updated_at = NOW() WHERE id = ?");
+
+            $stmt->execute([$order->status, $id]);
+
+            return $this->getOne($id);
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    function delete($id)
+    {
+        try {
+            $item_stmt = $this->connection->prepare("DELETE FROM order_item WHERE order_id = :id");
+            $item_stmt->bindParam(':id', $id);
+            $item_stmt->execute();
+
+            $stmt = $this->connection->prepare("DELETE FROM `order` WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+        return true;
     }
 }
