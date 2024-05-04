@@ -69,6 +69,8 @@ $router->delete('/users/(\d+)', 'UserController@delete'); //
 
 // routes for the orders endpoint
 $router->get('/orders/(\d+)', 'OrderController@getOne');
+$router->get('/orders', 'OrderController@getAll');
+$router->get('/orders/user/(\d+)', 'OrderController@getAllByUserId');
 $router->post('/orders', 'OrderController@create');
 $router->post('/orders/items', 'OrderController@addOrderItem');
 

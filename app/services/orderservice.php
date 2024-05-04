@@ -19,6 +19,16 @@ class OrderService
         return $this->orderrepository->getOne($id);
     }
 
+    public function getAll()
+    {
+        return $this->orderrepository->getAll();
+    }
+
+    public function getAllByUserId($user_id)
+    {
+        return $this->orderrepository->getAllByUserId($user_id);
+    }
+
     public function createOrder($order)
     {
         return $this->orderrepository->createOrder($order);

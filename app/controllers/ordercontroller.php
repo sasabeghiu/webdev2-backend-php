@@ -48,6 +48,34 @@ class OrderController extends Controller
         }
     }
 
+    public function getAll()
+    {
+        if (!$this->checkforJwt([1])) {
+            return false;
+        }
+
+        $orders = $this->service->getAll();
+        if ($orders) {
+            $this->respond($orders);
+        } else {
+            $this->respondWithError(404, "No orders found");
+        }
+    }
+
+    public function getAllByUserId($user_id)
+    {
+        if (!$this->checkforJwt([1, 2])) {
+            return false;
+        }
+
+        $orders = $this->service->getAllByUserId($user_id);
+        if ($orders) {
+            $this->respond($orders);
+        } else {
+            $this->respondWithError(404, "No orders found");
+        }
+    }
+
     public function addOrderItem()
     {
         if (!$this->checkforJwt([1, 2])) {

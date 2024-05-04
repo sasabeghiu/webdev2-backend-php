@@ -10,4 +10,5 @@ class Order
     public string $status;
     public string $created_at;
     public string $updated_at;
+    public array $items;
 }
