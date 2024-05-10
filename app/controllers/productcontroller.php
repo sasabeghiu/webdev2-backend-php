@@ -18,11 +18,15 @@ class ProductController extends Controller
     public function getAll()
     {
         $name = NULL;
+        $category = NULL;
         $offset = NULL;
         $limit = NULL;
 
         if (isset($_GET["name"])) {
             $name = $_GET["name"] ?? NULL;
+        }
+        if (isset($_GET["category"]) && is_numeric($_GET["category"])) {
+            $category = $_GET["category"];
         }
         if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
             $offset = $_GET["offset"];
@@ -31,7 +35,7 @@ class ProductController extends Controller
             $limit = $_GET["limit"];
         }
 
-        $products = $this->service->getAll($name, $offset, $limit);
+        $products = $this->service->getAll($name, $category, $offset, $limit);
 
         $this->respond($products);
     }

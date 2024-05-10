@@ -10,16 +10,24 @@ use Repositories\Repository;
 
 class ProductRepository extends Repository
 {
-    function getAll($name = NULL, $offset = NULL, $limit = NULL)
+    function getAll($name = NULL, $category = NULL, $offset = NULL, $limit = NULL)
     {
         try {
             $query = "SELECT product.*, category.name as category_name FROM product INNER JOIN category ON product.category_id = category.id";
 
             $params = [];
+            $conditions = [];
 
             if (isset($name)) {
                 $query .= " WHERE product.name LIKE :name";
                 $params[':name'] = '%' . $name . '%';
+            }
+            if (isset($category)) {
+                $conditions[] = "product.category_id = :category";
+                $params[':category'] = $category;
+            }
+            if (!empty($conditions)) {
+                $query .= " WHERE " . implode(' AND ', $conditions);
             }
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
