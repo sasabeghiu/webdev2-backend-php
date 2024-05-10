@@ -10,21 +10,36 @@ use Repositories\Repository;
 
 class ProductRepository extends Repository
 {
-    function getAll($offset = NULL, $limit = NULL)
+    function getAll($name = NULL, $offset = NULL, $limit = NULL)
     {
         try {
             $query = "SELECT product.*, category.name as category_name FROM product INNER JOIN category ON product.category_id = category.id";
+
+            $params = [];
+
+            if (isset($name)) {
+                $query .= " WHERE product.name LIKE :name";
+                $params[':name'] = '%' . $name . '%';
+            }
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
+                $params[':limit'] = $limit;
+                $params[':offset'] = $offset;
             }
             $stmt = $this->connection->prepare($query);
-            if (isset($limit) && isset($offset)) {
-                $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-                $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+            foreach ($params as $param => &$value) {
+                if ($param == ':limit' || $param == ':offset') {
+                    $stmt->bindParam($param, $value, PDO::PARAM_INT);
+                } else {
+                    $stmt->bindParam($param, $value, PDO::PARAM_STR);
+                }
             }
+
             $stmt->execute();
 
-            $products = array();
+            $products = [];
+
             while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
                 $products[] = $this->rowToProduct($row);
             }
