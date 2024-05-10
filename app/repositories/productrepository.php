@@ -19,7 +19,7 @@ class ProductRepository extends Repository
             $conditions = [];
 
             if (isset($name)) {
-                $query .= " WHERE product.name LIKE :name";
+                $conditions[] = "product.name LIKE :name";
                 $params[':name'] = '%' . $name . '%';
             }
             if (isset($category)) {
