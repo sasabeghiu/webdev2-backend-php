@@ -4,14 +4,18 @@ namespace Services;
 
 use Repositories\OrderRepository;
 use Repositories\CartItemRepository;
+use Repositories\ProductRepository;
 
 class OrderService
 {
     private $orderrepository;
+    private $productRepository;
+
 
     function __construct()
     {
         $this->orderrepository = new OrderRepository();
+        $this->productRepository = new ProductRepository();
     }
 
     public function getOne($id)
@@ -36,6 +40,7 @@ class OrderService
 
     public function addOrderItem($item)
     {
+        $this->productRepository->decrementQuantity($item->product_id, $item->quantity);
         return $this->orderrepository->addOrderItem($item);
     }
 

@@ -133,4 +133,17 @@ class ProductRepository extends Repository
         }
         return true;
     }
+
+    function decrementQuantity($id, $quantity)
+    {
+        try {
+            $stmt = $this->connection->prepare("UPDATE product SET quantity_available = quantity_available - ? WHERE id = ?");
+
+            $stmt->execute([$quantity, $id]);
+
+            return $this->getOne($id);
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
 }

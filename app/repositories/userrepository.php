@@ -131,7 +131,13 @@ class UserRepository extends Repository
         try {
             $stmt = $this->connection->prepare("UPDATE user SET username = ?, password = ?, email = ?, role_id = ? WHERE id = ?");
 
-            $password_hash = $this->hashPassword($user->password);
+            if (!empty($user->password)) {
+                $password_hash = $this->hashPassword($user->password);
+            } else {
+                $currentUserData = $this->getOne($id);
+                $password_hash = $currentUserData->password;
+            }
+            
             $stmt->execute([$user->username, $password_hash, $user->email, $user->role_id, $id]);
 
             return $this->getOne($id);

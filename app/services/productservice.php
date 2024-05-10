@@ -37,4 +37,9 @@ class ProductService
     {
         return $this->repository->delete($item);
     }
+
+    public function decrementQuantity($id, $quantity)
+    {
+        return $this->repository->decrementQuantity($id, $quantity);
+    }
 }

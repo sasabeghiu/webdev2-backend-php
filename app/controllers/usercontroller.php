@@ -126,7 +126,7 @@ class UserController extends Controller
 
     public function update($id)
     {
-        if (!$this->checkforJwt([1])) {
+        if (!$this->checkforJwt([1, 2])) {
             return false;
         }
 
