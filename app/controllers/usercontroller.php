@@ -70,6 +70,7 @@ class UserController extends Controller
                 "username" => $user->username,
                 "password" => $user->password,
                 "role_id" => $user->role_id,
+                "email" => $user->email,
                 "expireAt" => $expirationTime
             );
     }

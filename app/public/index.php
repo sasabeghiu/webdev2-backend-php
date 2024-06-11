@@ -76,5 +76,13 @@ $router->post('/orders/items', 'OrderController@addOrderItem');
 $router->put('/orders/(\d+)', 'OrderController@update');
 $router->delete('/orders/(\d+)', 'OrderController@delete');
 
+// routes for the shipping info endpoint
+$router->get('/shippinginfo', 'ShippingInfoController@getAll');
+$router->get('/shippinginfo/(\d+)', 'ShippingInfoController@getOne');
+$router->get('/shippinginfo/user/(\d+)', 'ShippingInfoController@getOneByUserId');
+$router->post('/shippinginfo', 'ShippingInfoController@create');
+$router->put('/shippinginfo/(\d+)', 'ShippingInfoController@update');
+$router->delete('/shippinginfo/(\d+)', 'ShippingInfoController@delete');
+
 // Run it!
 $router->run();
