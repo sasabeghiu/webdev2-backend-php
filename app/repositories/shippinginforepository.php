@@ -95,8 +95,8 @@ class ShippingInfoRepository extends Repository
     function update($shipping_info, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE shipping_info SET user_id = ?, full_name = ?, address = ?, city = ?, postal_code = ?, country = ?, email = ?, phone_number = ? WHERE user_id = ?");
-            $stmt->execute([$shipping_info->user_id, $shipping_info->full_name, $shipping_info->address, $shipping_info->city, $shipping_info->postal_code, $shipping_info->country, $shipping_info->email, $shipping_info->phone_number, $id]);
+            $stmt = $this->connection->prepare("UPDATE shipping_info SET full_name = ?, address = ?, city = ?, postal_code = ?, country = ?, phone_number = ? WHERE user_id = ?");
+            $stmt->execute([$shipping_info->full_name, $shipping_info->address, $shipping_info->city, $shipping_info->postal_code, $shipping_info->country, $shipping_info->phone_number, $id]);
             return $this->getOneByUserId($id);
         } catch (PDOException $e) {
             echo $e;
