@@ -1,10 +1,13 @@
 <?php
+$url = getenv('DATABASE_URL');
+$url = parse_url($url);
+
 $type = "pgsql";
-$servername = getenv("DB_HOST");
-$username = getenv("DB_USERNAME");
-$password = getenv("DB_PASSWORD");
-$database = getenv("DB_DATABASE");
-$port = getenv("DB_PORT");
+$servername = $url["host"];
+$port = $url["port"];
+$username = $url["user"];
+$password = $url["pass"];
+$database = ltrim($url["path"], '/');
 
 $dsn = "$type:host=$servername;port=$port;dbname=$database";
 
