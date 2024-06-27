@@ -13,7 +13,7 @@ class UserRepository extends Repository
     function checkUsernamePassword($username, $password)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT id, username, password, email, role_id FROM user WHERE username = :username");
+            $stmt = $this->connection->prepare("SELECT id, username, password, email, role_id FROM 'user' WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -46,7 +46,7 @@ class UserRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT user.id, username, email, role.id as role_id, role.name as role_name FROM user INNER JOIN role ON user.role_id = role.id";
+            $query = "SELECT user.id, username, email, role.id as role_id, role.name as role_name FROM 'user' INNER JOIN role ON user.role_id = role.id";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -71,7 +71,7 @@ class UserRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT user.id, username, password, email, role.id as role_id, role.name as role_name FROM user INNER JOIN role ON user.role_id = role.id WHERE user.id = :id";
+            $query = "SELECT user.id, username, password, email, role.id as role_id, role.name as role_name FROM 'user' INNER JOIN role ON user.role_id = role.id WHERE user.id = :id";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -113,7 +113,7 @@ class UserRepository extends Repository
     function insert($user)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into user (username, password, email, role_id) VALUES (?,?,?,?)");
+            $stmt = $this->connection->prepare("INSERT into 'user' (username, password, email, role_id) VALUES (?,?,?,?)");
 
             $password_hash = $this->hashPassword($user->password);
             $stmt->execute([$user->username, $password_hash, $user->email, $user->role_id]);
@@ -129,7 +129,7 @@ class UserRepository extends Repository
     function update($user, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE user SET username = ?, password = ?, email = ?, role_id = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE 'user' SET username = ?, password = ?, email = ?, role_id = ? WHERE id = ?");
 
             if (!empty($user->password)) {
                 $password_hash = $this->hashPassword($user->password);
@@ -149,7 +149,7 @@ class UserRepository extends Repository
     function delete($id)
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM user WHERE id = :id");
+            $stmt = $this->connection->prepare("DELETE FROM 'user' WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             return;
