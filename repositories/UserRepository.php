@@ -46,7 +46,7 @@ class UserRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = 'SELECT user.id, user.username, user.email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON "user".role_id = role.id';
+            $query = 'SELECT "user".id, "user".username, "user".email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON "user".role_id = role.id';
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
