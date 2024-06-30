@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Jun 08, 2024 at 10:54 AM
+-- Generation Time: Jun 30, 2024 at 12:38 PM
 -- Server version: 11.3.2-MariaDB-1:11.3.2+maria~ubu2204
 -- PHP Version: 8.2.17
 
@@ -39,9 +39,8 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`id`, `cart_id`, `product_id`, `quantity`) VALUES
-(104, 50, 17, 1),
-(105, 50, 18, 1),
-(112, 52, 24, 1);
+(302, 144, 19, 1),
+(305, 146, 22, 1);
 
 -- --------------------------------------------------------
 
@@ -83,11 +82,8 @@ CREATE TABLE `order` (
 --
 
 INSERT INTO `order` (`id`, `user_id`, `total`, `status`, `created_at`, `updated_at`) VALUES
-(61, 33, 610.00, 'Delivered', '2024-05-10 15:36:09', '2024-05-10 17:21:53'),
-(65, 17, 790.00, 'ordered', '2024-06-06 16:14:04', '2024-06-06 16:14:04'),
-(69, 17, 150.00, 'ordered', '2024-06-06 16:26:22', '2024-06-06 16:26:22'),
-(77, 17, 3200.00, 'ordered', '2024-06-06 17:24:57', '2024-06-06 17:24:57'),
-(78, 17, 3200.00, 'ordered', '2024-06-06 17:25:24', '2024-06-06 17:25:24');
+(122, 43, 710.00, 'ordered', '2024-06-30 12:31:55', '2024-06-30 12:31:55'),
+(123, 44, 1140.00, 'ordered', '2024-06-30 12:34:53', '2024-06-30 12:34:53');
 
 -- --------------------------------------------------------
 
@@ -108,23 +104,10 @@ CREATE TABLE `order_item` (
 --
 
 INSERT INTO `order_item` (`id`, `order_id`, `product_id`, `quantity`, `price`) VALUES
-(107, 61, 17, 1, 90.00),
-(108, 61, 18, 1, 220.00),
-(109, 61, 22, 3, 100.00),
-(115, 65, 18, 1, 220.00),
-(116, 65, 19, 1, 150.00),
-(117, 65, 20, 1, 420.00),
-(125, 69, 19, 1, 150.00),
-(140, 77, 17, 1, 90.00),
-(141, 77, 18, 2, 220.00),
-(142, 77, 19, 5, 150.00),
-(143, 77, 23, 1, 240.00),
-(144, 77, 20, 4, 420.00),
-(145, 78, 17, 1, 90.00),
-(146, 78, 18, 2, 220.00),
-(147, 78, 19, 5, 150.00),
-(148, 78, 23, 1, 240.00),
-(149, 78, 20, 4, 420.00);
+(215, 122, 17, 3, 90.00),
+(216, 122, 18, 2, 220.00),
+(217, 123, 23, 3, 240.00),
+(218, 123, 20, 1, 420.00);
 
 -- --------------------------------------------------------
 
@@ -147,14 +130,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `price`, `quantity_available`, `description`, `image`, `category_id`) VALUES
-(17, 'Wireless Audio-Recording Night WebCam', 90.00, 87, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://tinyurl.com/2k8a4fr3', 13),
-(18, 'Smart Security Camera', 220.00, 85, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://tinyurl.com/yc4xnx8p', 13),
-(19, 'Keyless Smart Door lock', 150.00, 75, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-5.jpg', 12),
-(20, 'FreeTech Security Camera', 420.00, 89, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://tinyurl.com/46bemj98', 13),
-(21, 'Digital Safety Door Lock', 80.00, 100, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-2.jpg', 12),
-(22, 'Aluminum Housing Home Security Camera', 100.00, 87, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://tinyurl.com/5sesvap3', 13),
-(23, 'Invasion Proof Digital Safe', 240.00, 97, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-4.jpg', 14),
-(24, 'Door Jaw Lock Security Device', 110.00, 94, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-6.jpg', 14);
+(17, 'Wireless Audio-Recording Night WebCam', 90.00, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://i.imgur.com/iImPw02.jpeg', 13),
+(18, 'Smart Security Camera', 220.00, 52, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://i.imgur.com/5kDd9WP.jpeg', 13),
+(19, 'Keyless Smart Door lock', 150.00, 59, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-5.jpg', 12),
+(20, 'FreeTech Security Camera', 420.00, 82, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://i.imgur.com/53CPMpN.jpeg', 13),
+(21, 'Digital Safety Door Lock', 80.00, 99, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-2.jpg', 12),
+(22, 'Aluminum Housing Home Security Camera', 100.00, 85, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://i.imgur.com/ftVLccD.jpeg', 13),
+(23, 'Invasion Proof Digital Safe', 240.00, 89, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-4.jpg', 14),
+(24, 'Door Jaw Lock Security Device', 110.00, 93, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed bibendum enim, vitae porttitor lectus. Nulla vitae nunc feugiat, commodo lectus sit amet, venenatis lectus. Nam sit amet congue metus. Nullam ut blandit mi. Integer lobortis mi vitae pretium pellentesque. Praesent sed laoreet leo. Mauris eget sapien at massa placerat tincidunt vitae nec arcu. In iaculis, orci vitae pretium feugiat, orci lacus pretium augue, eu sollicitudin urna eros id tellus. Morbi orci dolor, tincidunt a dolor sit amet, venenatis porttitor velit. In sit amet blandit nisl. Etiam metus lorem, viverra sed eros a, facilisis vestibulum nulla.', 'https://hotlock.axiomthemes.com/wp-content/uploads/2017/01/product-6.jpg', 14);
 
 -- --------------------------------------------------------
 
@@ -200,6 +183,32 @@ INSERT INTO `service` (`id`, `name`, `description`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `shipping_info`
+--
+
+CREATE TABLE `shipping_info` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `postal_code` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `phone_number` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shipping_info`
+--
+
+INSERT INTO `shipping_info` (`id`, `user_id`, `full_name`, `address`, `city`, `postal_code`, `country`, `email`, `phone_number`) VALUES
+(14, 43, 'John Dolphin', 'Bijdoorplan 15', 'Haarlem', '2015 CE', 'Netherlands', 'customer@innova.com', '0674915025'),
+(15, 44, 'Hall Guy', 'Randomstraat 23', 'Amsterdam', '4142 AV', 'Netherlands', 'admin@innova.com', '0674012456');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shopping_cart`
 --
 
@@ -216,8 +225,8 @@ CREATE TABLE `shopping_cart` (
 --
 
 INSERT INTO `shopping_cart` (`id`, `user_id`, `created_at`, `updated_at`, `total_price`) VALUES
-(50, 26, '2024-04-14 10:04:49', '2024-05-04 16:14:40', 1.00),
-(52, 1, '2024-04-15 17:26:40', '2024-05-04 16:03:43', 110.00);
+(144, 43, '2024-06-30 12:32:32', '2024-06-30 12:32:32', 150.00),
+(146, 44, '2024-06-30 12:35:02', '2024-06-30 12:35:02', 100.00);
 
 -- --------------------------------------------------------
 
@@ -238,10 +247,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `role_id`) VALUES
-(1, 'username', '$2y$10$DQlV0u9mFmtOWsOdxXX9H.4kgzEB3E8o97s.S.Pdy4klUAdBvtVh.', 'username@password.com', 1),
-(17, 'sasacrow', '$2y$10$YlSCxMPfUaNrrWINSB2Iy.ycnuMCsbfuw4xlAuPHoIEEP5QklTVTi', 'sasacrow.com', 1),
-(26, 'rester', '$2y$10$9epG708iXzWa9DNqOcnu4.7BShVHSVFjxAF6NAYkrk0rxzo8p.kQC', 'rester', 2),
-(33, 'vanyatester', '$2y$10$7For1bq4iIEuZtEkTgfdNOFhONORxMEx3fhwq4Qj0Bw4ko7FnV6vW', 'vanyatester', 2);
+(43, 'customer', '$2y$10$jhiWKnMl3OOBeFmkyv8HrOoTJJ8CvihDziVS2T8GdlFV/6HNACGQO', 'customer@innova.com', 2),
+(44, 'admin', '$2y$10$Nw8zdbm2JHYRySF0QpyfQu.8sxJMQDnDSgok/x44wLbtu4uZBSdz2', 'admin@innova.com', 1);
 
 --
 -- Indexes for dumped tables
@@ -296,6 +303,13 @@ ALTER TABLE `service`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `shipping_info`
+--
+ALTER TABLE `shipping_info`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
@@ -318,55 +332,61 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=306;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `service`
 --
 ALTER TABLE `service`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `shipping_info`
+--
+ALTER TABLE `shipping_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Constraints for dumped tables
@@ -397,6 +417,12 @@ ALTER TABLE `order_item`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+--
+-- Constraints for table `shipping_info`
+--
+ALTER TABLE `shipping_info`
+  ADD CONSTRAINT `fk_shipping_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `shopping_cart`
