@@ -123,7 +123,7 @@ class ProductRepository extends Repository
 
             $stmt->execute([$product->name, $product->price, $product->quantity_available, $product->description, $product->image, $product->category_id, $id]);
 
-            return $this->getOne($product->id);
+            return $this->getOne($id);
         } catch (PDOException $e) {
             echo $e;
         }
