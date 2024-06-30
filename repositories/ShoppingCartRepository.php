@@ -13,7 +13,7 @@ class ShoppingCartRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, user.username as user_username FROM shopping_cart INNER JOIN user ON shopping_cart.user_id = user.id";
+            $query = 'SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, "user".username as user_username FROM shopping_cart INNER JOIN "user" ON shopping_cart.user_id = "user".id';
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -38,7 +38,7 @@ class ShoppingCartRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, user.username as user_username FROM shopping_cart INNER JOIN user ON shopping_cart.user_id = user.id WHERE shopping_cart.id = :id";
+            $query = 'SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, "user".username as user_username FROM shopping_cart INNER JOIN "user" ON shopping_cart.user_id = "user".id WHERE shopping_cart.id = :id';
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -62,7 +62,7 @@ class ShoppingCartRepository extends Repository
     function getCartByUserId($id)
     {
         try {
-            $query = "SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, user.username as user_username FROM shopping_cart INNER JOIN user ON shopping_cart.user_id = user.id WHERE user.id = :id";
+            $query = 'SELECT shopping_cart.id, user_id, created_at, updated_at, total_price, "user".username as user_username FROM shopping_cart INNER JOIN "user" ON shopping_cart.user_id = "user".id WHERE "user".id = :id';
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
