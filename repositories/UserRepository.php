@@ -71,7 +71,7 @@ class UserRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = 'SELECT user.id, user.username, user.password, user.email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON "user".role_id = role.id WHERE user.id = :id';
+            $query = 'SELECT "user".id, "user".username, "user".password, "user".email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON "user".role_id = role.id WHERE user.id = :id';
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
