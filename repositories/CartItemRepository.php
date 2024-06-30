@@ -202,33 +202,44 @@ class CartItemRepository extends Repository
     }
 
     function getCartItemsCount($id)
-{
-    try {
-        $cartQuery = "SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1";
-        $cartStmt = $this->connection->prepare($cartQuery);
-        $cartStmt->bindParam(':id', $id);
-        $cartStmt->execute();
+    {
+        try {
+            // First, get the cart ID for the user
+            $cartQuery = "SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1";
+            $cartStmt = $this->connection->prepare($cartQuery);
+            $cartStmt->bindParam(':id', $id);
+            $cartStmt->execute();
 
-        $cartResult = $cartStmt->fetch(PDO::FETCH_ASSOC);
-        if (!$cartResult) {
-            throw new Exception("Shopping Cart not found for user ID: $id");
+            $cartResult = $cartStmt->fetch(PDO::FETCH_ASSOC);
+            if (!$cartResult) {
+                return [
+                    "success" => false,
+                    "errorMessage" => "Shopping Cart not found"
+                ];
+            }
+
+            // If cart exists, get the item count
+            $cartId = $cartResult['id'];
+            $itemCountQuery = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = :cart_id";
+            $itemCountStmt = $this->connection->prepare($itemCountQuery);
+            $itemCountStmt->bindParam(':cart_id', $cartId);
+            $itemCountStmt->execute();
+
+            $itemCountResult = $itemCountStmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                "success" => true,
+                "itemCount" => $itemCountResult['itemCount'] ?? 0
+            ];
+        } catch (PDOException $e) {
+            return [
+                "success" => false,
+                "errorMessage" => $e->getMessage()
+            ];
+        } catch (Exception $e) {
+            return [
+                "success" => false,
+                "errorMessage" => $e->getMessage()
+            ];
         }
-
-        $cartId = $cartResult['id'];
-        $itemCountQuery = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = :cart_id";
-        $itemCountStmt = $this->connection->prepare($itemCountQuery);
-        $itemCountStmt->bindParam(':cart_id', $cartId);
-        $itemCountStmt->execute();
-
-        $itemCountResult = $itemCountStmt->fetch(PDO::FETCH_ASSOC);
-        return $itemCountResult['itemCount'] ?? 0;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-        return 0;
-    } catch (Exception $e) {
-        echo $e->getMessage();
-        return 0;
     }
-}
-
 }
