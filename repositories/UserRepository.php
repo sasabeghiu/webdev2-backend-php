@@ -46,7 +46,7 @@ class UserRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = 'SELECT user.id, username, email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON user.role_id = role.id';
+            $query = 'SELECT user.id, user.username, user.email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON "user".role_id = role.id';
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -71,7 +71,7 @@ class UserRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = 'SELECT user.id, username, password, email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON user.role_id = role.id WHERE user.id = :id';
+            $query = 'SELECT user.id, user.username, user.password, user.email, role.id as role_id, role.name as role_name FROM "user" INNER JOIN role ON "user".role_id = role.id WHERE user.id = :id';
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
