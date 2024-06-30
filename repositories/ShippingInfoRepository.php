@@ -11,7 +11,7 @@ class ShippingInfoRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT shipping_info.id, user_id, full_name, address, city, postal_code, country, user.email, phone_number FROM shipping_info INNER JOIN user ON shipping_info.user_id = user.id";
+            $query = 'SELECT shipping_info.id, user_id, full_name, address, city, postal_code, country, "user".email, phone_number FROM shipping_info INNER JOIN "user" ON shipping_info.user_id = "user".id';
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -33,7 +33,7 @@ class ShippingInfoRepository extends Repository
     function getOne($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT shipping_info.id, user_id, full_name, address, city, postal_code, country, shipping_info.email, phone_number FROM shipping_info WHERE id = :id");
+            $stmt = $this->connection->prepare('SELECT shipping_info.id, user_id, full_name, address, city, postal_code, country, shipping_info.email, phone_number FROM shipping_info WHERE id = :id');
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
@@ -54,7 +54,7 @@ class ShippingInfoRepository extends Repository
     function getOneByUserId($user_id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT shipping_info.id, user_id, full_name, address, city, postal_code, country, shipping_info.email, phone_number FROM shipping_info WHERE user_id = :user_id");
+            $stmt = $this->connection->prepare('SELECT shipping_info.id, user_id, full_name, address, city, postal_code, country, shipping_info.email, phone_number FROM shipping_info WHERE user_id = :user_id');
             $stmt->bindParam(':user_id', $user_id);
             $stmt->execute();
 
