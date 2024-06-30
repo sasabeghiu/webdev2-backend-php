@@ -15,9 +15,7 @@ class OrderRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT o.*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price 
-                  FROM "order" o
-                  INNER JOIN order_item oi ON o.id = oi.order_id";
+            $query = 'SELECT o.*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM "order" o INNER JOIN order_item oi ON o.id = oi.order_id';
             $stmt = $this->connection->prepare($query);
             $stmt->execute([$id]);
 
@@ -53,9 +51,9 @@ class OrderRepository extends Repository
     function getAll()
     {
         try {
-            $query = "SELECT o.*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM "order" o
+            $query = 'SELECT o.*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM "order" o
             LEFT JOIN order_item oi ON o.id = oi.order_id
-            ORDER BY created_at DESC";
+            ORDER BY created_at DESC';
             $stmt = $this->connection->prepare($query);
             $stmt->execute();
 
