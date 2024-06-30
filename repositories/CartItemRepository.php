@@ -204,10 +204,9 @@ class CartItemRepository extends Repository
     function getCartItemsCount($id)
     {
         try {
-            // First, get the cart ID for the user
             $cartQuery = "SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1";
             $cartStmt = $this->connection->prepare($cartQuery);
-            $cartStmt->bindParam(':id', $id);
+            $cartStmt->bindParam(':id', $id, PDO::PARAM_INT);
             $cartStmt->execute();
 
             $cartResult = $cartStmt->fetch(PDO::FETCH_ASSOC);
@@ -218,14 +217,15 @@ class CartItemRepository extends Repository
                 ];
             }
 
-            // If cart exists, get the item count
             $cartId = $cartResult['id'];
+
             $itemCountQuery = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = :cart_id";
             $itemCountStmt = $this->connection->prepare($itemCountQuery);
-            $itemCountStmt->bindParam(':cart_id', $cartId);
+            $itemCountStmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
             $itemCountStmt->execute();
 
             $itemCountResult = $itemCountStmt->fetch(PDO::FETCH_ASSOC);
+
             return [
                 "success" => true,
                 "itemCount" => $itemCountResult['itemCount'] ?? 0
