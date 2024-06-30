@@ -212,7 +212,7 @@ class CartItemRepository extends Repository
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return [
                 "success" => true,
-                "itemCount" => $result['itemCount'] ?? 0
+                "itemCount" => $result ?? 0
             ];
         } catch (PDOException $e) {
             return [
