@@ -204,10 +204,7 @@ class CartItemRepository extends Repository
     function getCartItemsCount($id)
     {
         try {
-            $query = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = (
-                SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1
-              )
-              ";
+            $query = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = (SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1)";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
