@@ -15,7 +15,9 @@ class OrderRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = 'SELECT "o".*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM "order" AS "o" INNER JOIN order_item oi ON o.id = oi.order_id';
+            $query = 'SELECT "o".*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM "order" "o"
+            LEFT JOIN order_item oi ON o.id = oi.order_id
+            WHERE "o".id = ?';
             $stmt = $this->connection->prepare($query);
             $stmt->execute([$id]);
 
