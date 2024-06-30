@@ -202,18 +202,33 @@ class CartItemRepository extends Repository
     }
 
     function getCartItemsCount($id)
-    {
-        try {
-            $query = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = (SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1)";
-            $stmt = $this->connection->prepare($query);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
+{
+    try {
+        $cartQuery = "SELECT id FROM shopping_cart WHERE user_id = :id LIMIT 1";
+        $cartStmt = $this->connection->prepare($cartQuery);
+        $cartStmt->bindParam(':id', $id);
+        $cartStmt->execute();
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result['itemCount'] ?? 0;
-        } catch (PDOException $e) {
-            echo $e;
-            return 0;
+        $cartResult = $cartStmt->fetch(PDO::FETCH_ASSOC);
+        if (!$cartResult) {
+            throw new Exception("Shopping Cart not found for user ID: $id");
         }
+
+        $cartId = $cartResult['id'];
+        $itemCountQuery = "SELECT COUNT(*) AS itemCount FROM cart_item WHERE cart_id = :cart_id";
+        $itemCountStmt = $this->connection->prepare($itemCountQuery);
+        $itemCountStmt->bindParam(':cart_id', $cartId);
+        $itemCountStmt->execute();
+
+        $itemCountResult = $itemCountStmt->fetch(PDO::FETCH_ASSOC);
+        return $itemCountResult['itemCount'] ?? 0;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+        return 0;
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        return 0;
     }
+}
+
 }
