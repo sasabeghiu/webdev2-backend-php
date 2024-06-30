@@ -157,7 +157,7 @@ class OrderRepository extends Repository
     public function createOrder($order)
     {
         try {
-            $query = "INSERT INTO developmentdb.order (user_id, total, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())";
+            $query = 'INSERT INTO "order" (user_id, total, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())';
             $stmt = $this->connection->prepare($query);
 
             $stmt->execute([$order->user_id, $order->total, $order->status]);
@@ -190,7 +190,7 @@ class OrderRepository extends Repository
     function update($order, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE `order` SET status = ?, updated_at = NOW() WHERE id = ?");
+            $stmt = $this->connection->prepare('UPDATE "order" SET status = ?, updated_at = NOW() WHERE id = ?');
 
             $stmt->execute([$order->status, $id]);
 
@@ -207,7 +207,7 @@ class OrderRepository extends Repository
             $item_stmt->bindParam(':id', $id);
             $item_stmt->execute();
 
-            $stmt = $this->connection->prepare("DELETE FROM `order` WHERE id = :id");
+            $stmt = $this->connection->prepare('DELETE FROM "order" WHERE id = :id');
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             return;
