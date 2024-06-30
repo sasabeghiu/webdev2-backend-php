@@ -92,10 +92,10 @@ class OrderRepository extends Repository
     function getAllByUserId($user_id)
     {
         try {
-            $query = "SELECT o.*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM `order` o
+            $query = 'SELECT o.*, oi.id AS item_id, oi.product_id, oi.quantity, oi.price FROM "order" "o"
             LEFT JOIN order_item oi ON o.id = oi.order_id
             WHERE o.user_id = ?
-            ORDER BY created_at DESC";
+            ORDER BY created_at DESC';
             $stmt = $this->connection->prepare($query);
             $stmt->execute([$user_id]);
 
